@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インタラクティブな組織図</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 基本的なフォント設定 */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc; /* Tailwind's gray-50 */
+        }
+
+        /* 組織図の基本コンテナ */
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow-x: auto; /* 横に長い場合にスクロール可能にする */
+            padding: 2rem 1rem;
+        }
+
+        /* ツリーの構造部分 */
+        .org-chart ul {
+            position: relative;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            margin: 0;
+        }
+
+        .org-chart li {
+            position: relative;
+            padding: 0 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 上部への接続線 */
+        .org-chart li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 2px solid #cbd5e1; /* gray-300 */
+            width: 0;
+            height: 1.5rem;
+        }
+
+        /* 水平方向の接続線 */
+        .org-chart li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-top: 2px solid #cbd5e1; /* gray-300 */
+            width: 100%;
+            height: 0;
+        }
+
+        /* 最初の子要素の水平線を調整 */
+        .org-chart li:first-child::after {
+            left: 50%;
+            width: 50%;
+        }
+
+        /* 最後の子要素の水平線を調整 */
+        .org-chart li:last-child::after {
+            width: 50%;
+        }
+
+        /* 子が1つだけの場合は水平線を消す */
+        .org-chart li:only-child::after {
+            display: none;
+        }
+        
+        /* 下部への接続線 */
+        .org-chart .node::after {
+            content: '';
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 2px solid #cbd5e1; /* gray-300 */
+            width: 0;
+            height: 1.5rem;
+        }
+
+        /* 子要素を持たないノードの下部接続線を消す */
+        .org-chart .node.is-leaf::after {
+            display: none;
+        }
+
+        /* ルートノードの不要な線を消す */
+        .org-chart > ul > li::before,
+        .org-chart > ul > li::after {
+            display: none;
+        }
+
+        /* カード（ノード）のスタイル */
+        .node {
+            position: relative;
+            background-color: white;
+            border: 1px solid #e2e8f0; /* gray-200 */
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            min-width: 160px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .node:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* 本部のスタイル */
+        .node.hq {
+            border-top: 4px solid #3b82f6; /* blue-500 */
+        }
+        
+        /* 部門長のスタイル */
+        .node.dept-head {
+             border-top: 4px solid #10b981; /* emerald-500 */
+        }
+        
+        /* 直轄部門のスタイル */
+        .node.direct-control {
+            border-top: 4px solid #6b7280; /* gray-500 */
+        }
+
+        /* チーム・担当のスタイル */
+        .node.team {
+            border-top: 4px solid #a855f7; /* purple-500 */
+        }
+        
+        /* 役職・部署名 */
+        .node .role {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563; /* gray-600 */
+        }
+
+        /* 名前 */
+        .node .name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #1f2937; /* gray-800 */
+            margin-top: 0.25rem;
+        }
+        
+        /* 折りたたみ時のスタイル */
+        .collapsed > ul {
+            display: none;
+        }
+        .collapsed .node::after {
+            display: none;
+        }
+        .collapsed .toggler::before {
+            content: '+';
+        }
+
+        /* 開閉ボタン */
+        .toggler {
+            position: absolute;
+            bottom: -0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            color: #4b5563;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            z-index: 10;
+        }
+        .toggler::before {
+            content: '−';
+        }
+        .node.is-leaf .toggler {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 sm:p-8">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">組織図</h1>
+            <p class="text-gray-600 mt-2">各ボックスをクリックすると、下位の階層を開閉できます。</p>
+        </div>
+
+        <div class="org-chart">
+            <ul>
+                <li>
+                    <div class="node hq">
+                        <div class="role">【本部】</div>
+                        <div class="name">河内</div>
+                    </div>
+                    <ul>
+                        <!-- 中学部 -->
+                        <li id="node-junior-high">
+                            <div class="node dept-head">
+                                <div class="role">【中学部】</div>
+                                <div class="name">須藤</div>
+                                <div class="toggler"></div>
+                            </div>
+                            <ul>
+                                <li><div class="node team is-leaf"><div class="role">文系</div><div class="name">森田</div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">理系</div><div class="name">西嶋<sup class="text-red-500 font-bold">*</sup></div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">文理</div><div class="name">佐野<sup class="text-red-500 font-bold">*</sup></div></div></li>
+                            </ul>
+                        </li>
+
+                        <!-- 大学部 -->
+                        <li id="node-university">
+                            <div class="node dept-head">
+                                <div class="role">【大学部】</div>
+                                <div class="name">西嶋<sup class="text-red-500 font-bold">*</sup></div>
+                                <div class="toggler"></div>
+                            </div>
+                            <ul>
+                                <li><div class="node team is-leaf"><div class="role">文理</div><div class="name">佐野<sup class="text-red-500 font-bold">*</sup></div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">化学</div><div class="name">西嶋<sup class="text-red-500 font-bold">*</sup></div></div></li>
+                            </ul>
+                        </li>
+
+                        <!-- 高校部 -->
+                        <li id="node-high-school">
+                            <div class="node dept-head">
+                                <div class="role">【高校部】</div>
+                                <div class="name">高木</div>
+                                <div class="toggler"></div>
+                            </div>
+                            <ul>
+                                <li><div class="node team is-leaf"><div class="role">国語</div><div class="name">斎藤</div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">英語</div><div class="name">柴田</div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">英語</div><div class="name">伊藤</div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">国語</div><div class="name">佐野<sup class="text-red-500 font-bold">*</sup></div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">理系</div><div class="name">西嶋<sup class="text-red-500 font-bold">*</sup></div></div></li>
+                            </ul>
+                        </li>
+
+                        <!-- 直轄 -->
+                        <li id="node-direct">
+                            <div class="node direct-control">
+                                <div class="role">【直轄】</div>
+                                <div class="name">&nbsp;</div> <!-- No head name provided -->
+                                <div class="toggler"></div>
+                            </div>
+                            <ul>
+                                <li><div class="node team is-leaf"><div class="role">理系</div><div class="name">鈴木</div></div></li>
+                                <li><div class="node team is-leaf"><div class="role">理系</div><div class="name">栃木</div></div></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <p class="text-center mt-8 text-sm text-gray-600"><sup class="text-red-500 font-bold">*</sup> は複数部門の兼務を示します。</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 各ノードのクリックイベントを設定
+            document.querySelectorAll('.node').forEach(function(node) {
+                // is-leafクラスを持つノード（末端）はクリックイベントを設定しない
+                if (node.classList.contains('is-leaf')) {
+                    node.style.cursor = 'default';
+                    return;
+                }
+
+                node.addEventListener('click', function(event) {
+                    // トグルボタン自身がクリックされた場合は何もしない
+                    if (event.target.classList.contains('toggler')) {
+                        return;
+                    }
+                    
+                    // 親のli要素のクラスをトグルする
+                    const parentLi = node.closest('li');
+                    if (parentLi) {
+                        parentLi.classList.toggle('collapsed');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
