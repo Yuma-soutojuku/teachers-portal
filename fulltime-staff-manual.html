@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桑都塾・専任講師 日々の業務リスト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            line-height: 1.7;
+        }
+        .task-card h3 {
+            cursor: pointer;
+        }
+        .task-card .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .task-card .content.open {
+            max-height: 2000px; /* 十分な高さを設定 */
+            transition: max-height 0.7s ease-in;
+        }
+        /* ol, ulのインデント調整 */
+        .content-area ol, .content-area ul {
+            padding-left: 1.25rem; /* 20px */
+        }
+        .content-area ul ul, .content-area ul ol, .content-area ol ol, .content-area ol ul {
+            padding-left: 1rem; /* 16px */
+        }
+        .link {
+            color: #2563eb; /* blue-600 */
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .link:hover {
+            color: #1d4ed8; /* blue-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-700">桑都塾</h1>
+            <p class="text-xl md:text-2xl font-semibold text-gray-600 mt-2">専任講師 日々のオペレーションリスト</p>
+        </header>
+
+        <div class="space-y-6">
+
+            <!-- PCセットアップ -->
+            <div class="bg-white p-6 rounded-xl shadow-md content-area">
+                <h2 class="text-2xl font-bold mb-4 text-indigo-600 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                    出勤 & PCセットアップ
+                </h2>
+                <ol class="list-decimal space-y-3 pl-5">
+                    <li><strong>出勤。</strong>出勤ボタン自体はパソコンさえあれば押せるので早めに押す。(1分でも遅れたら遅刻扱いとなるため注意)</li>
+                    <li><strong>電話の転送解除。</strong></li>
+                    <li><strong>DiscordとChromeの立ち上げ。</strong></li>
+                    <li><strong>基本的にはChromeのみ動かす。</strong>※メモリの関係でChromeのみ立ち上げるのが良い。
+                        <ul class="list-disc mt-2 space-y-1 pl-5">
+                            <li>Google Workspaceを使用しているためほとんど全てのアプリケーションがChromeと互換性が良い。</li>
+                            <li>Edgeは使用しない。閲覧できないサイトや文字化けが多すぎる。</li>
+                            <li>Chromeのタブは以下のような開き方がよい。<br><strong>(左端から) Gmail / Chat / Meet / Drive / Calendar / Sheet / (Docs)</strong></li>
+                            <li>上記のタブ編成はタブを右クリックして Groupの作成でプリセット設定できる。</li>
+                            <li>Spread Sheetは基本的に数字で始まる名前になっているので、検索窓に数字を入れればヒットする。<br>例:
+                                <a href="https://docs.google.com/spreadsheets/u/0/d/15v5vNHXdK_BguDwUJFKhqm0LEFTFOgsbruCbRvY_rj4/edit" target="_blank" rel="noopener noreferrer" class="link">11.【R7年度】桑都塾TT</a>, 
+                                <a href="https://docs.google.com/spreadsheets/u/0/d/1N4SCBQjMD7CbUMza5Vz1J1gs6xIyTKNgoeaVV9xrntY/edit" target="_blank" rel="noopener noreferrer" class="link">12.講師勤怠・事務勤怠</a>, 
+                                <a href="https://docs.google.com/spreadsheets/u/0/d/1kE-KgYmzoJ9rSGihV8xgVv6QCVZZL5mrJK0de9xyAO4/edit" target="_blank" rel="noopener noreferrer" class="link">13.イレギュラー一覧</a>, 
+                                <a href="https://docs.google.com/spreadsheets/u/0/d/1L17r9jPGVJQG_uyc9VlMSvMoeL1Nm_peiHOVNMN3X2I/edit" target="_blank" rel="noopener noreferrer" class="link">14.定時報告一覧</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- コミュニケーション管理 -->
+            <div class="bg-white p-6 rounded-xl shadow-md task-card">
+                <h3 class="text-2xl font-bold mb-4 text-green-600 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        コミュニケーション管理
+                    </div>
+                    <svg class="w-6 h-6 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </h3>
+                <div class="content space-y-6 content-area">
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-700 mb-2">5. まずはメールチェック</h4>
+                        <ul class="list-disc space-y-3 pl-5">
+                            <li>メールのオペレーションは仕事効率を最適化する上で一番肝要。<br><span class="text-sm text-gray-600">※ラベル設定は<a href="https://drive.google.com/file/d/1VN1cjpGAMPWp3Iw2WNRsjq3pwggoQhqo/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="link">こちらのリンク</a>からxmlファイルをダウンロードして、「設定」>「すべての設定を表示」 > 「フィルタとブロック中のアドレス」と進み、最下部の「フィルタをインポート」からxmlファイルを選ぶ。</span></li>
+                            <li>受信トレイから未読メールを1つ1つ確認する。</li>
+                            <li>基本的に、受信した全てのメールは以下の3つに分類する。
+                                <ol class="list-decimal mt-2 space-y-1 pl-5">
+                                    <li><strong>邪魔なメール(広告など)</strong>→アーカイブをして受信トレイから消す</li>
+                                    <li><strong>関係ない科の定時</strong>→既読のみして放置(関係ない科の定時報告でもさらっと目を通すことが重要。)</li>
+                                    <li><strong>上長指示・保護者からの連絡・部下の定時報告</strong>→すぐに返信する。すぐ対応できないものは既読してから未読に戻す。<br><span class="text-sm text-red-600 font-semibold">※保護者含め、外部への連絡には必ず上長をCcに入れる。</span></li>
+                                </ol>
+                            </li>
+                            <li>自身の部下からの定時報告には返信をする。定時報告のチェックポイントは以下。
+                                <ul class="list-disc mt-2 space-y-1 pl-5">
+                                    <li>Subjectの間違いがないかの確認: `【定時報告】8月2日(土)` ※数字と括弧は半角。</li>
+                                    <li>TTやCalendarを確認し、事実と相違がないかの確認(リアルチェック)</li>
+                                    <li>内容が適切に細かく記述されているかチェック</li>
+                                    <li>ノートリンク、録画リンクが間違っていないかチェック</li>
+                                    <li>事務作業の時間帯申請がしっかりされているかチェック</li>
+                                    <li>延長・短縮・キャンセルがある場合は、<a href="https://docs.google.com/spreadsheets/u/0/d/1kE-KgYmzoJ9rSGihV8xgVv6QCVZZL5mrJK0de9xyAO4/edit" target="_blank" rel="noopener noreferrer" class="link">13.イレギュラー一覧</a>に追記。</li>
+                                    <li>特に問題なければ、<a href="https://docs.google.com/spreadsheets/u/0/d/1N4SCBQjMD7CbUMza5Vz1J1gs6xIyTKNgoeaVV9xrntY/edit" target="_blank" rel="noopener noreferrer" class="link">12.講師勤怠・事務勤怠</a>で勤怠をつける。</li>
+                                    <li>勤怠の書き込みが終わったら以下のような形で返信。<br>
+                                        <div class="text-sm bg-gray-100 p-2 rounded mt-1 border border-gray-300">
+                                            お疲れ様です。〇〇です。<br>
+                                            定時報告ありがとうございます。<br>
+                                            (何かコメントする)<br>
+                                            勤怠反映済みです。よろしくお願いいたします。
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>未読メールが無くなったら、「迷惑メール」なども確認し、保護者からの連絡や重要な連絡が埋もれていないか入念にチェックをする。</li>
+                            <li>次に下書きを確認。そこに前回の退勤時の引き継ぎ内容があるのでそれを順に進める。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-gray-700 mb-2">6. Chatの確認</h4>
+                        <ul class="list-disc space-y-2 pl-5">
+                            <li>基本的にはメールのオペレーションと同じ。</li>
+                            <li>ただしチャットは未読は残さない。すぐ返信できない内容の場合は下記のように残す。<br>
+                                <div class="text-sm bg-gray-100 p-2 rounded mt-1 border border-gray-300">
+                                    ご連絡ありがとうございます。確認の上ご連絡いたしますので、少々お待ちいただけますと幸いです。
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 事務・授業準備 -->
+            <div class="bg-white p-6 rounded-xl shadow-md content-area">
+                <h2 class="text-2xl font-bold mb-4 text-yellow-600 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                    事務 & 授業準備
+                </h2>
+                <ol class="list-decimal space-y-3 pl-5">
+                    <li><strong>部下の定時遅延のチェック。</strong><br><a href="https://docs.google.com/spreadsheets/u/0/d/1L17r9jPGVJQG_uyc9VlMSvMoeL1Nm_peiHOVNMN3X2I/edit" target="_blank" rel="noopener noreferrer" class="link">14.定時報告一覧</a>の「チェックシート」を確認して、2日以上前の定時が FALSE になっていたら全体メールを用いて催促を行う。</li>
+                    <li><strong>その日の授業内容のチェック。</strong>
+                        <ul class="list-disc mt-2 space-y-1 pl-5">
+                            <li>Google Calendarと、 <a href="https://docs.google.com/spreadsheets/u/0/d/15v5vNHXdK_BguDwUJFKhqm0LEFTFOgsbruCbRvY_rj4/edit" target="_blank" rel="noopener noreferrer" class="link">11. 【R7年度】桑都塾TT</a> を確認して相違がないか、イレギュラーは発生していないか、必ずチェックする。</li>
+                            <li>TTが確認できたら、TTシートの最前部からカリキュラムにも目を通す。</li>
+                            <li>また、最後部(一番右)のシートの左上が「待ち」になっていたらTTを組む。</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>&copy; 2025 桑都塾. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.task-card h3').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('svg:last-child');
+                
+                content.classList.toggle('open');
+                icon.classList.toggle('rotate-180');
+
+                // 開いたときに高さを再計算してスムーズに表示
+                if (content.classList.contains('open')) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                } else {
+                    content.style.maxHeight = null;
+                }
+            });
+        });
+
+        // 初期状態でコミュニケーション管理を開いておく
+        document.addEventListener('DOMContentLoaded', () => {
+            const communicationCard = document.querySelector('.task-card');
+            if (communicationCard) {
+                const header = communicationCard.querySelector('h3');
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('svg:last-child');
+                
+                content.classList.add('open');
+                icon.classList.add('rotate-180');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    </script>
+
+</body>
+</html>
